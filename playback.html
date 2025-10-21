@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RedZone Core</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="brand-wrap">
+                <div class="logo">⚽</div>
+                <div class="brand">City Football Group</div>
+            </div>
+            <nav class="tabs">
+                <a class="tab active" href="index.html">View Sessions</a>
+                <a class="tab" href="schedule.html">Schedule</a>
+                <a class="tab" href="admin/">Admin Dashboard</a>
+            </nav>
+            <div class="user">
+                <div class="avatar" id="avatar">JY</div>
+                <div class="menu" id="menu">
+                    <a href="#" id="profile">Profile</a>
+                    <a href="#" id="logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container schedule-container">
+        <!-- <h3 id="title">Playback</h3> -->
+        <div id="meta"></div>
+
+        <div class="card view-card">
+            <div class="hint">View 1: Broadcast</div>
+            <video id="player" controls src=""></video>
+            <div class="toolbar">
+                <button id="playBtn" class="btn">Play</button>
+                <button id="downloadBtn" class="btn">Download</button>
+                <button id="shareBtn" class="btn">Share Link</button>
+                <button id="closeBtn" class="btn">Close</button>
+            </div>
+        </div>
+
+        <div class="card view-card">
+            <div class="hint">View 2: Static</div>
+            <video id="player" controls src=""></video>
+            <div class="toolbar">
+                <button id="playBtn" class="btn">Play</button>
+                <button id="downloadBtn" class="btn">Download</button>
+                <button id="shareBtn" class="btn">Share Link</button>
+                <button id="closeBtn" class="btn">Close</button>
+            </div>
+        </div>
+
+        <script>
+            const params = new URLSearchParams(location.search);
+            const id = params.get('id');
+            const key = 'corepoc_session_' + id;
+            let s = null;
+            try { s = JSON.parse(localStorage.getItem(key)) } catch (e) { s = null }
+            // fallback to opener if available
+            if (!s && window.opener && window.opener.state) {
+                s = window.opener.state.sessions.find(x => x.id === id);
+            }
+            if (!s) {
+                document.body.innerHTML = '<p>Session not found.</p>';
+            } else {
+                // small helper to avoid HTML injection
+                function escapeHtml(str) {
+                    return String(str).replace(/[&<>"']/g, c =>
+                        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+                    );
+                }
+                document.getElementById('meta').innerHTML = `Session: <strong>${escapeHtml(s?.name ?? 'Unknown')}</strong> @ ` +
+                    `Pitch: <span class="muted">${escapeHtml(s?.pitch ?? 'Unknown')}</span><br>` +
+                    `<small>${escapeHtml(new Date(s.start).toLocaleString())} – ${escapeHtml(new Date(s.end).toLocaleString())}</small>`;
+                // placeholder video src (demo)
+                const player = document.getElementById('player');
+                player.src = ''; // real app would point to actual mp4/stream URL
+                document.getElementById('playBtn').addEventListener('click', () => player.play());
+                document.getElementById('downloadBtn').addEventListener('click', () => alert('Download triggered (demo).'));
+                document.getElementById('shareBtn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(location.href).then(() => alert('Playback URL copied!'));
+                });
+                document.getElementById('closeBtn').addEventListener('click', () => window.close());
+                // cleanup stored snapshot
+                localStorage.removeItem(key);
+            }
+        </script>
+    </main>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="modal" role="dialog" aria-modal="true" style="display:none"></div>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="schedule.js"></script>
+</body>
+
+</html>

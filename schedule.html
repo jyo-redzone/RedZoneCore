@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RedZone Core</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="brand-wrap">
+                <div class="logo">⚽</div>
+                <div class="brand">City Football Group</div>
+            </div>
+            <nav class="tabs">
+                <a class="tab" href="index.html">View Sessions</a>
+                <a class="tab active" href="schedule.html">Schedule</a>
+                <a class="tab" href="admin/">Admin Dashboard</a>
+            </nav>
+            <div class="user">
+                <div class="avatar" id="avatar">JY</div>
+                <div class="menu" id="menu">
+                    <a href="#" id="profile">Profile</a>
+                    <a href="#" id="logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container schedule-container">
+        <div class="card form">
+            <div id="title" class="section-title">Schedule Session</div>
+            <div class="field"><label>Session Name</label><input id="fName" type="text"
+                    placeholder="Enter session name"></div>
+            <div class="row">
+                <div class="field"><label>Start</label><input id="fStartDT" type="datetime-local"></div>
+                <div class="field"><label>End</label><input id="fEndDT" type="datetime-local"></div>
+            </div>
+            <div class="field"><label>Session Type</label>
+                <div class="mode" id="typeCards">
+                    <button class="pill active" data-val="Match" type="button">Match</button>
+                    <button class="pill" data-val="Training" type="button">Training</button>
+                </div>
+            </div>
+            <div class="field"><label>Sport Setting</label>
+                <div class="mode" id="settingCards">
+                    <button class="pill active" data-val="Broadcast" type="button">Broadcast</button>
+                    <button class="pill" data-val="Tactical" type="button">Tactical</button>
+                </div>
+            </div>
+            <div class="field"><label>Selection Mode</label>
+                <div class="mode">
+                    <button class="pill active" id="modePitch" type="button">By Pitch</button>
+                    <button class="pill" id="modeCamera" type="button">By Camera</button>
+                </div>
+                <div id="pitchGrid" class="grid2"></div>
+                <div id="cameraGrid" class="grid2" style="display:none"></div>
+                <div class="hint">Tip: Toggle items to select. Each selected camera can add up to 2 views.</div>
+            </div>
+            <div class="views" id="viewsBox" style="display:none">
+                <h4>Configure Views (per selected camera)</h4>
+                <div id="viewsList"></div>
+            </div>
+            <div class="row">
+                <button class="btn ghost" id="clearForm" type="button">Clear</button>
+                <button class="btn primary" id="saveSchedule" type="button">Save</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="modal" role="dialog" aria-modal="true" style="display:none"></div>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="schedule.js"></script>
+</body>
+
+</html>
